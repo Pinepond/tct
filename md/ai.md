@@ -54,3 +54,112 @@
       - SKIPGRAM
         - 단어를 특정 길이를 가진 임의 벡터로 생성 (원핫인코딩보다 훨씩 작음)
         - 인공지능에게 단어를 주고 문맥을 만들도록 러닝
+- 대표 자연어 이해 타스크
+  - 문장 / 문서 분류(sentence/document classfication)
+    - 입력받은 텍스트를 클래스(카테고리) 분류하는 과제 (ex : 감정분석(긍/부정), 챗봇 기능 맵핑)
+  - Sequence to Sequence
+    - 문장 / 문서를 입력받아 문장을 출력 (ex : 긴문서 요약 , 번역)
+  - 질의응답(Question Answering)
+    - 질문을 받아 매뉴얼중 가장 가능성이 높은 영역을 리턴하는 MRC(Machine Reading comprehension)
+    - 유사한 과거 질문(FAQ)를 뽑는 IR (Information Retrieval)
+    - 주로 챗봇 / 콜센터 활용
+# 과거 데이터 분석을 통한 처리
+- 시계열 데이터 처리
+  - 주식 / 기상과 같이 과거의 데이터를 기반으로 예측 
+- 순환신경망 ( RNN :  Recurrent Neural Network )
+  - 장점
+    - 시간 흐름에 다른 과거정보를 누적할 수 있다.
+    - 가변길이의 데이터를 처리할 수 있다.
+    - 다양한 구성의 모델을 만들 수 있다.
+  - 단점
+    - 연산속도가 느리다. (과거데이터부터 순차로 처리하기 때문)
+    - 학습이 불안정하다
+      - timestep 가 너무길어지면, 학습량 폭발(gradient exploding)
+      - timestemp 가 길어지면 먼 과거의 데이터가 잊혀진다 (Gradient Vanishing)
+    - 장기 종속성/의존성 문제(long term dependency)
+- RNN 성능보와
+  - LSTM(Long Short term memory)
+    - 먼과거의 중요한 자료는 기억하고, 불필요한것은 버리는 RNN
+    - forget gate, input gate, ouput gate 로 구성됨
+    - RNN 보다 예측은 잘하나 , 속도는 더 느려짐
+    - 비슷한것으로 GRU 가 있음
+    - ex) 태양광 에너지 발전량 에측, 번역도 단어 순서대로 시계열처리가능(sequence to sequence)
+## 좋은 인공지능 만들기
+- 오프라인 프로세스(offline process)
+  - 오픈전 모델 최적화에 해당
+  - Training Pipeline
+    - 기존 데이터를 정제하여 필요하느 부분을 취하거나 라벨을 붙인다.
+    - 데이터가 마련되면 좋은 성능을 달성할때까지(validate & select model) 반복실험 진행 -> 튜닝
+    - 배포를 위해 최종모델 선택(publish model)
+- 온라인 프로세스(online process)
+  - 오픈후 운영단계에 해당 -> 개발에 가까움 ai 모델을 운영환경에 띄우고, 화면 개발 , 고객사 db 연결 등
+  - 이제부터는 운영환경 스트리밍 데이터(live data) 처리
+- 오버피팅(overfitting)과 일반화(generalization)
+  - 일반화(generalization) : 이전에 본적 없는 데이터에 대해서도 잘 수행하는 능력
+  - 일반화 능력이 떨어지며 오버피팅된 상태임(새로운 데이터 처리 불가, 기존 답만 제대로 수행)
+  - 오버피팅을 회피하고 일반화를 잘하기 위해 , 기존을 데이터를 Training, Validation, Test 로 나누어 사용한다.(8:2:2,9:1:1)
+    - Traning set : 학습용 데이터, 정답이 있는 데이터
+    - Validation set : 정답을 알려주지 않음, 이 데이터를 통해 모델 튜닝
+    - Test set : 최종 성능 평가용 데이터
+- 학습곡선(learning curve) 확인하기
+  - Traning set 의 정답률이 올라가나, validation set 의 정답률은 올라가지 않기 시작하면 오버피팅
+- Regularization : 일반화(generaliztion) 성능향상이 목적임
+  - 데이터 증강 : 데이터를 변조하여 더많이 확보하는 방식
+    - 이미지 반전, 크롭, 노이즈, 생상, 명암 , 채도 변화 등과같은 방식
+  - Capacity 줄이기
+    - Capacity 는 모델의 복잡한 정도를 나타냄
+    - 신경망이 여러층이거나, 뉴런수가 많아질면 높아짐
+    - Capacity 가 필요이상으로 높으면 그냥 데이터 외움
+  - 조기종료(Early Stopping)
+    - 오버피팅이 감지되면 조기종료(validation set 의 개선이 없을때)
+  - 드롭아웃(Dropout)
+    - 일정비율의 노드(인공뉴런)을 무작위로 끄고 진행.
+
+## 인공지능 재활용
+- 인공지능 개발의 어려움
+  - 구체적이지 않으며 불평확한 타스크
+  - 적은 데이터, 낮은 품질의 데이터
+  - 다른 도메인 환경(적용환경의 차이에 따른 문제(영상처리시, 조도 각도 등))
+- Transfer Learning ( 전이학습 )
+  - 기존에 만들어진 딥러닝 모델을 재활용하여 사용하는 기법
+  - 이미 만들어 놓은 모델의 아키텍처를 새태스크에 맞게 조금 수정
+  - Catastrophic Forgetting (치명적 기억상실 ) : transfer 가 많이되면 기존 데이터를 잊게됨
+  - Transfer 를 잘하려면?
+    - 레이어 동결 - 기존데이터를 처리하는 전반부 는 동결, 새타스크를위한 후반부 진행
+    - Discriminative fine tuning - 전반부는 조금만 공부, 후반부는 많이 공부
+
+## 준비된 인공지능
+- Pre-Training (사전학습) : Transfer Learning 을 염두에 두고 여러 지식을 미리 학습
+  - 이미지 : 이미지넷
+  - 영상 : Youtube-8m, 
+  - 언어 : 위키피디아, 나무위키, 세종말뭉치 학습
+- Self Supervised Learning( 자가지도 학습)
+  - 대규모 데이터는 라벨이 잘 없음, 이런경우 사용
+  - 기계가 라벨을 만들어서 사용
+
+## 족집게 학습
+- Active Learning(능동학습) : 데이터는 있으나, 라벨이 없고, 라벨을 만들 인력이 있으나, 부족한 경우 사용
+- ex : 의료 이미지 인식 -> 의사를 계속 라벨링하라고 할수는 없으니...
+- 인공지능 모델이 맞추기 어려운 데이터를 골라서 집중학습
+- Active Learning 절차
+  - Training a Model : 초기학습 데이터(라벨링된)를 학습
+  - Select query : 라벨되지 않은 데이터 중, 어려운 데이터 선별
+  - human labeling : 선별된 데이터 라벨링
+  - 선별한 라벨 데이터를 기존학습 데이터와 병합한 후 다시 모델 학습
+- Query Strategy : 어떻게 잘모르는 데이터를 선별할지?
+  - Uncertainty Sampling : 학습된 모델의 판정값을 기반으로 뽑는다.
+  - Query By Commitee : 여러모델이 자주틀리는 데이터 뽑는다.
+  - Expected Impact : 데이터가 추가될때, 학습된 모델이 가장 많이 변화하는데이터 선별
+  - Density Weighted mothod : 밀집된 데이터 선별
+  - Core-set approach : 데이터를 최대한 고르게 선별하여 전체 분표를 대표할수 있게함
+## 중요데이터 추출
+많은 데이터중 중요데이터를 선별할수 있어야한다.
+- Attention mechanism(어텐션 메커니즘)
+  - RNN 의 경우 오래된 데이터는 망각한다. 하지만 어텐션 메커니즘을 통해 과거데이터중 중요부분에 집중하게함
+  - 어텐션 스코어(Attention score)
+    - 0~1 사이의 점수를 부여하여 집중여부를 정한다.
+  - 컨텍스트 벡터(Context Vector)
+    - 어텐션 스코어를 구하고 나면 현재 디코딩할 단어와의 관련성을 반영하여 다시 입력 문장을 인코딩하는것
+- XAI 로서의 어텐션
+  - 어텐션 메커니즘은 기계가 판단시 중요하게 생각하는 부분을 우리에게 알려준다. 이를 통해 우리는 결과를 해석할 수 있다. 이를 해석가능한 인공지능(interpretable ai)라고한다.
+  - 
