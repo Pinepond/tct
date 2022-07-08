@@ -3,7 +3,7 @@ import java.util.Map;
 
 public class SingletonMap {
 	public static SingletonMap instance = null;
-	public static Map<String, QInfo> map = new HashMap<String, QInfo>();
+	public static Map<String, String> map = new HashMap<String, String>();
 	
 	
 	public static synchronized SingletonMap getInstance() {
@@ -13,11 +13,11 @@ public class SingletonMap {
 		return instance;
 	}
 	
-	public static Map<String, QInfo> getMap() {
+	public static Map<String, String> getMap() {
 		return map;
 	}
 	
-	public static void setMap(Map<String, QInfo> map) {
+	public static void setMap(Map<String, String> map) {
 		SingletonMap.map = map;
 	}	
 
