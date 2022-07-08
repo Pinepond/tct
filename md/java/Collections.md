@@ -1,4 +1,4 @@
-   - list + itorator
+## list + itorator
    ```
                List<Integer> testArrayList = new ArrayList<Integer>();
                testArrayList.add(1);
@@ -18,7 +18,7 @@
 
    ```
 
-   - Hash set
+## Hash set
    ```
            Set<String> hSet = new HashSet<String>();
           //  Set<String> hSet = new TreeSet<String>(); 정렬
@@ -37,11 +37,11 @@
 
    ```
 
-   - MAp
+## MAp
    ```
    Map<Integer, String> map = new HashMap<Integer, String>();
    ```
-   - Comparator
+## Comparator
    ```
            Collections.sort(list, new Comparator<Student>() {
                @Override
@@ -55,7 +55,7 @@
                }
            });
    ```
-   - Map 정렬
+## Map 정렬
    ```
    Map<string, string=""> map = new HashMap<>();
 
