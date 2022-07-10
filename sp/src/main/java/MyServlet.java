@@ -12,9 +12,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.util.Enumeration;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class MyServlet extends HttpServlet {
 
@@ -80,11 +78,11 @@ public class MyServlet extends HttpServlet {
         // Set Map or Object from JSON parameter
         String jsonString = jsonParamToString(req);
         Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, String>>() {}.getType();
-        Map<String, String> jsonMap = gson.fromJson(jsonString, type);
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        // Map 으로 json 받기 - json 에 단순 String 인경우 Object 로 받지 않고 String 으로 받는게 편함
+        Map<String, Object> jsonMap = gson.fromJson(jsonString, type);
+        // Object 로  json 받기
         JsonInfo jsonInfo = gson.fromJson(jsonString, JsonInfo.class);
-
-        System.out.println("[POST] [ jsonMap : " + (jsonMap == null ? "NULL" : jsonMap.toString()) + " ]");
 
         System.out.println("--------------------------------------------");
 
@@ -99,7 +97,7 @@ public class MyServlet extends HttpServlet {
     }
 
     // 응답 json 샘플
-    public static void writeResp(HttpServletResponse resp, Map<String, String> resMap) throws IOException {
+    public static void writeResp(HttpServletResponse resp, Map<String, Object> resMap) throws IOException {
         Gson gson = new Gson();
         resp.getWriter().write(gson.toJson(resMap));
         //resp.flushBuffer();

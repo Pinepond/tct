@@ -17,4 +17,11 @@ public class MyThread extends Thread {
 		
 
 	}
+
+	// Usage
+	/*
+	MyThread tempThread = new MyThread("qName",1);
+    tempThread.start();
+    tempThread.join();
+        */
 }

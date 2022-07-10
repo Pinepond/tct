@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JsonInfo {
@@ -34,4 +35,16 @@ public class JsonInfo {
 //    public void setTest(String[] test) {
 //        this.test = test;
 //    }
+
+
+    @Override
+    public String toString() {
+        return "JsonInfo{" +
+                "color='" + color + '\'' +
+                ", value='" + value + '\'' +
+                ", testStr='" + testStr + '\'' +
+                ", testArr=" + Arrays.toString(testArr) +
+                ", testList=" + testList +
+                '}';
+    }
 }
