@@ -23,14 +23,17 @@
     - 인공뉴런을 여러층 쌓으면 인공 신경망
 ## 이미지처리
   - 3차원(TENSOR) : 2차원배열 3개 (각각 R,G,B)
-  - CNN 
+  - Convolutional Neural Network(CNN) 
     - 특징추출(Feature Extraction) 과, task 수행영역으로 나누어 처리
     - 특징추출
       - 컨볼루션 연산(특징찾기, 가중합+비선형)과 풀링연산(핵심특징 추출) 수행
+        - 컨볼루션 연산 : 컨볼루션 필터(또는 커널)가 입력 이미지를 상하좌우로 훑으며 주요한 특징이 있는지 찾아내는 과정
+        - Feature map(또는 convolved feature) : 컨볼루션 연산의 결과물
+        - 풀링연산 : Feature map을 역시 상하좌우로 훑으며 핵심적인 정보만을 영역별로 샘플링 하는데요, 주로 영역 내 가장 큰 값만을 남기고 나머지 값을 버리는 MaxPooling 방식을 적용
     - task
       - classfication : 종 분류 (ex : 개, 소, 고양이)
       - detection : 이미지내 좌표 추적 (ex : 카메라 사람얼굴 인식 박스)
-      - segmetation : 필셀단위 추적 (ex : 자율주행 사물인식, 경계를 필셀단위로 파악)
+      - Segmentation : 필셀단위 추적 (ex : 자율주행 사물인식, 경계를 필셀단위로 파악)
 
 ## 텍스트 처리
 - 자연어 이해(NLU)
@@ -67,6 +70,7 @@
 - 시계열 데이터 처리
   - 주식 / 기상과 같이 과거의 데이터를 기반으로 예측 
 - 순환신경망 ( RNN :  Recurrent Neural Network )
+  - 과거에 데이터를 처리하여 결과를 출력했던 과정의 일부를 가져와 현 시점에서 데이터를 처리하고 결과를 출력하는 데 도움을 주는 방식, 이 때 입력 데이터의 정보를 누적하는 부분을 인코딩(Encoding), 결과를 출력하는 부분을 디코딩(Decoding)이라고 표현
   - 장점
     - 시간 흐름에 다른 과거정보를 누적할 수 있다.
     - 가변길이의 데이터를 처리할 수 있다.
@@ -75,8 +79,8 @@
     - 연산속도가 느리다. (과거데이터부터 순차로 처리하기 때문)
     - 학습이 불안정하다
       - timestep 가 너무길어지면, 학습량 폭발(gradient exploding)
-      - timestemp 가 길어지면 먼 과거의 데이터가 잊혀진다 (Gradient Vanishing)
-    - 장기 종속성/의존성 문제(long term dependency)
+      - timestep 가 길어지면 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing)
+    - 장기 종속성/의존성 문제(long term dependency) - 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing 과 long term dependency 차이 모르겠음)
 - RNN 성능보와
   - LSTM(Long Short term memory)
     - 먼과거의 중요한 자료는 기억하고, 불필요한것은 버리는 RNN
@@ -103,7 +107,7 @@
     - Test set : 최종 성능 평가용 데이터
 - 학습곡선(learning curve) 확인하기
   - Traning set 의 정답률이 올라가나, validation set 의 정답률은 올라가지 않기 시작하면 오버피팅
-- Regularization : 일반화(generaliztion) 성능향상이 목적임
+- Regularization(정규화) : 일반화(generaliztion) 성능향상이 목적임
   - 데이터 증강 : 데이터를 변조하여 더많이 확보하는 방식
     - 이미지 반전, 크롭, 노이즈, 생상, 명암 , 채도 변화 등과같은 방식
   - Capacity 줄이기
@@ -126,7 +130,7 @@
   - Catastrophic Forgetting (치명적 기억상실 ) : transfer 가 많이되면 기존 데이터를 잊게됨
   - Transfer 를 잘하려면?
     - 레이어 동결 - 기존데이터를 처리하는 전반부 는 동결, 새타스크를위한 후반부 진행
-    - Discriminative fine tuning - 전반부는 조금만 공부, 후반부는 많이 공부
+    - Discriminative fine tuning - 전반부는 조금만 공부, 후반부는 많이 공부(층마다 Learning rate(학습률)의 차별)
 
 ## 준비된 인공지능
 - Pre-Training (사전학습) : Transfer Learning 을 염두에 두고 여러 지식을 미리 학습
@@ -147,8 +151,8 @@
   - human labeling : 선별된 데이터 라벨링
   - 선별한 라벨 데이터를 기존학습 데이터와 병합한 후 다시 모델 학습
 - Query Strategy : 어떻게 잘모르는 데이터를 선별할지?
-  - Uncertainty Sampling : 학습된 모델의 판정값을 기반으로 뽑는다.
-  - Query By Commitee : 여러모델이 자주틀리는 데이터 뽑는다.
+  - Uncertainty Sampling : 학습된 모델의 판정값을 기반으로 뽑는다. -> ai 가 불확실하다고 판단하는 데이터 추출
+  - Query By Commitee : 여러 ai 모델이 자주틀리는 데이터 뽑는다.
   - Expected Impact : 데이터가 추가될때, 학습된 모델이 가장 많이 변화하는데이터 선별
   - Density Weighted mothod : 밀집된 데이터 선별
   - Core-set approach : 데이터를 최대한 고르게 선별하여 전체 분표를 대표할수 있게함
@@ -157,9 +161,9 @@
 - Attention mechanism(어텐션 메커니즘)
   - RNN 의 경우 오래된 데이터는 망각한다. 하지만 어텐션 메커니즘을 통해 과거데이터중 중요부분에 집중하게함
   - 어텐션 스코어(Attention score)
-    - 0~1 사이의 점수를 부여하여 집중여부를 정한다.
+    - 어텐션 스코어는 인공신경망 모델이 각 인코딩 timestep마다 계산된 특징(feature)를 가지고 자동으로 계산하는 0~1사이의 값입니다.
   - 컨텍스트 벡터(Context Vector)
-    - 어텐션 스코어를 구하고 나면 현재 디코딩할 단어와의 관련성을 반영하여 다시 입력 문장을 인코딩하는것
+    - 이렇게 어디를 더 살펴보고 어디는 대충 볼지에 대해 어텐션 스코어를 구하고 나면 현재 디코딩할 단어와의 관련성을 반영하여 다시 입력 문장을 인코딩하게 되는데 이는 중요도에 따라 전체 문맥의 정보를 잘 반영하고 있다고 하여 컨텍스트 벡터(Context vector)라고 부릅니다.
 - XAI 로서의 어텐션
   - 어텐션 메커니즘은 기계가 판단시 중요하게 생각하는 부분을 우리에게 알려준다. 이를 통해 우리는 결과를 해석할 수 있다. 이를 해석가능한 인공지능(interpretable ai)라고한다.
 
@@ -174,7 +178,7 @@
     - Meta Learner : 최근에는 위의 두가지 방식보다는, 하이퍼파라미터도 모델을 통해 탐색한다. 메타 러너는 RNN 과 강화학습을 통해 하이퍼 파라미터 탐색
   - 아키텍처탐색 : AI 모델의 구조 자체를 더 효율적인 방향으로
     - NAS(Neural Architecture search) : 인공신경망용 아키텍처 탐색 방법
-      - Meta Learner 와 Learner 로 구성
+      -  Meta Learner와 Learner로 이루어져 있어서, Learner가 본 과제를 수행하는 AI 모델이라면 Meta Learner가 어떤 구조의 신경망을 만들면 좋은지, 아키텍쳐 구성을 고민하게 됩니다. Meta Learner는 역시 RNN과 강화학습을 접목한 형식으로 구성해볼 수 있습니다. Meta Learner는 Learner의 인공신경망 아키텍처가 어떻게 구성되면 좋을지를 결정하여, Learner의 태스크 수행 결과를 보상으로 활용합니다.
   - CSP 업체들도 AutoML 제공
 
 ## 설명가능한 인공지능 (XAI)
