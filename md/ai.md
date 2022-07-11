@@ -79,8 +79,8 @@
     - 연산속도가 느리다. (과거데이터부터 순차로 처리하기 때문)
     - 학습이 불안정하다
       - timestep 가 너무길어지면, 학습량 폭발(gradient exploding)
-      - timestemp 가 길어지면 먼 과거의 데이터가 잊혀진다 (Gradient Vanishing)
-    - 장기 종속성/의존성 문제(long term dependency)
+      - timestep 가 길어지면 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing)
+    - 장기 종속성/의존성 문제(long term dependency) - 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing 과 long term dependency 차이 모르겠음)
 - RNN 성능보와
   - LSTM(Long Short term memory)
     - 먼과거의 중요한 자료는 기억하고, 불필요한것은 버리는 RNN
