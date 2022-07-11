@@ -1,3 +1,5 @@
+이클립스 자동완성 활성화 https://mainia.tistory.com/5377
+
 json 파일 읽기
 https://hianna.tistory.com/630
 
