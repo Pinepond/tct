@@ -23,10 +23,13 @@
     - 인공뉴런을 여러층 쌓으면 인공 신경망
 ## 이미지처리
   - 3차원(TENSOR) : 2차원배열 3개 (각각 R,G,B)
-  - CNN 
+  - Convolutional Neural Network(CNN) 
     - 특징추출(Feature Extraction) 과, task 수행영역으로 나누어 처리
     - 특징추출
       - 컨볼루션 연산(특징찾기, 가중합+비선형)과 풀링연산(핵심특징 추출) 수행
+        - 컨볼루션 연산 : 컨볼루션 필터(또는 커널)가 입력 이미지를 상하좌우로 훑으며 주요한 특징이 있는지 찾아내는 과정
+        - Feature map(또는 convolved feature) : 컨볼루션 연산의 결과물
+        - 풀링연산 : Feature map을 역시 상하좌우로 훑으며 핵심적인 정보만을 영역별로 샘플링 하는데요, 주로 영역 내 가장 큰 값만을 남기고 나머지 값을 버리는 MaxPooling 방식을 적용
     - task
       - classfication : 종 분류 (ex : 개, 소, 고양이)
       - detection : 이미지내 좌표 추적 (ex : 카메라 사람얼굴 인식 박스)
