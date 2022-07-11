@@ -33,7 +33,7 @@
     - task
       - classfication : 종 분류 (ex : 개, 소, 고양이)
       - detection : 이미지내 좌표 추적 (ex : 카메라 사람얼굴 인식 박스)
-      - segmetation : 필셀단위 추적 (ex : 자율주행 사물인식, 경계를 필셀단위로 파악)
+      - Segmentation : 필셀단위 추적 (ex : 자율주행 사물인식, 경계를 필셀단위로 파악)
 
 ## 텍스트 처리
 - 자연어 이해(NLU)
