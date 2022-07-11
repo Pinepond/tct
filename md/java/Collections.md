@@ -56,7 +56,8 @@ Map<Integer, String> map = new HashMap<Integer, String>();
        });
 ```
 
-## Map key 정렬
+## Map key 정렬 / List 정렬 
+Map 정렬이 결국 keyset 을 list 로 만들어서 정렬하므로 같은내용임
 ```java
         Map<Integer, String> map = new HashMap<>();
 
