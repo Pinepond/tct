@@ -174,7 +174,7 @@
     - Meta Learner : 최근에는 위의 두가지 방식보다는, 하이퍼파라미터도 모델을 통해 탐색한다. 메타 러너는 RNN 과 강화학습을 통해 하이퍼 파라미터 탐색
   - 아키텍처탐색 : AI 모델의 구조 자체를 더 효율적인 방향으로
     - NAS(Neural Architecture search) : 인공신경망용 아키텍처 탐색 방법
-      - Meta Learner 와 Learner 로 구성
+      -  Meta Learner와 Learner로 이루어져 있어서, Learner가 본 과제를 수행하는 AI 모델이라면 Meta Learner가 어떤 구조의 신경망을 만들면 좋은지, 아키텍쳐 구성을 고민하게 됩니다. Meta Learner는 역시 RNN과 강화학습을 접목한 형식으로 구성해볼 수 있습니다. Meta Learner는 Learner의 인공신경망 아키텍처가 어떻게 구성되면 좋을지를 결정하여, Learner의 태스크 수행 결과를 보상으로 활용합니다.
   - CSP 업체들도 AutoML 제공
 
 ## 설명가능한 인공지능 (XAI)
