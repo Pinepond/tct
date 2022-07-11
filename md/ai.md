@@ -130,7 +130,7 @@
   - Catastrophic Forgetting (치명적 기억상실 ) : transfer 가 많이되면 기존 데이터를 잊게됨
   - Transfer 를 잘하려면?
     - 레이어 동결 - 기존데이터를 처리하는 전반부 는 동결, 새타스크를위한 후반부 진행
-    - Discriminative fine tuning - 전반부는 조금만 공부, 후반부는 많이 공부
+    - Discriminative fine tuning - 전반부는 조금만 공부, 후반부는 많이 공부(층마다 Learning rate(학습률)의 차별)
 
 ## 준비된 인공지능
 - Pre-Training (사전학습) : Transfer Learning 을 염두에 두고 여러 지식을 미리 학습
