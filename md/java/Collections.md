@@ -55,18 +55,49 @@
                }
            });
    ```
-## Map 정렬
+
+## Map key 정렬
+```java
+		Map<Integer, String> testMap = new LinkedHashMap<Integer, String>();
+
+        // Map에 데이터 추가
+        testMap.put( 1, "apple");
+        testMap.put( 4, "pineapple");
+        testMap.put( 2, "orange");
+        testMap.put( 5, "strawberry");
+        testMap.put( 3, "melon");
+
+        // 키로 정렬 - 오름차순
+        Object[] mapkey = testMap.keySet().toArray();
+        Arrays.sort(mapkey);
+        System.out.println("=============");
+        // 결과 출력
+        for (Object nKey : mapkey)
+        {
+        System.out.println(testMap.get(nKey));
+        }
+
+        // 정렬 - 내림차순
+        Arrays.sort(mapkey, Collections.reverseOrder());
+        System.out.println("=============");
+        // 결과 출력
+        for (Object nKey : mapkey)
+        {
+        System.out.println(testMap.get(nKey));
+        }
+```
+## Map value 정렬
    ```
-   Map<string, string=""> map = new HashMap<>();
+   Map<String, String> map = new HashMap<>();
 
            map.put("A", "29");
            map.put("C", "19");
            map.put("D", "31");
            map.put("B", "15");
 
-           List<string> keySetList = new ArrayList<>(map.keySet());
+           List<String> keySetList = new ArrayList<>(map.keySet());
            // 내림차순 //
-           Collections.sort(keySetList, new Comparator<string>() {
+           Collections.sort(keySetList, new Comparator<String>() {
                @Override
                public int compare(String o1, String o2) {
                    return map.get(o2).compareTo(map.get(o1));
