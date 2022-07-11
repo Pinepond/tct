@@ -103,7 +103,7 @@
     - Test set : 최종 성능 평가용 데이터
 - 학습곡선(learning curve) 확인하기
   - Traning set 의 정답률이 올라가나, validation set 의 정답률은 올라가지 않기 시작하면 오버피팅
-- Regularization : 일반화(generaliztion) 성능향상이 목적임
+- Regularization(정규화) : 일반화(generaliztion) 성능향상이 목적임
   - 데이터 증강 : 데이터를 변조하여 더많이 확보하는 방식
     - 이미지 반전, 크롭, 노이즈, 생상, 명암 , 채도 변화 등과같은 방식
   - Capacity 줄이기
