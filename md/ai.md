@@ -138,7 +138,7 @@
   - 이미지 : 이미지넷
   - 영상 : Youtube-8m, 
   - 언어 : 위키피디아, 나무위키, 세종말뭉치 학습
-- Self Supervised Learning( 자가지도 학습)
+- Self Supervised Learning( 자가지도 학습) - transfer learning 이전에 미리 학습하면 성능 좋아짐
   - 대규모 데이터는 라벨이 잘 없음, 이런경우 사용
   - 기계가 라벨을 만들어서 사용
 
