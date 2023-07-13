@@ -8,6 +8,7 @@ import java.net.URLStreamHandler;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -29,11 +30,14 @@ public class SpUtil {
 	public static String fileToString(String path) throws IOException {
 		return Files.lines(new File(path).toPath()).collect(Collectors.joining(System.lineSeparator()));
 	}
+
+	public static List<String> fileToStrings(String path) throws IOException {
+		return Files.lines(new File(path).toPath()).collect(Collectors.toList());
+	}
 	
 	public static void writeStringToFile(String path, String data) throws IOException {
 		Files.write(new File(path).toPath(), data.getBytes());
-	}	
-	
+	}
 	
 	//json
 	public static String objectToJsonString(Object obj) throws JsonSyntaxException, IOException {
@@ -53,7 +57,6 @@ public class SpUtil {
 	}
 	
 	// String
-
 	public static boolean isNullOrEmpty(String str) {
 		if (str == null || str.length() == 0) {
 			return true;
