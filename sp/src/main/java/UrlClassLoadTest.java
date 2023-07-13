@@ -4,19 +4,16 @@ import java.util.ArrayList;
 
 public class UrlClassLoadTest {
     public static void main(String[] args) throws Exception {
-        System.out.println("testset");
-        CustomFileClassLoader cfcLoader = new CustomFileClassLoader();
+//        System.out.println("testset");
+//        CustomFileClassLoader cfcLoader = new CustomFileClassLoader();
 
-        Class clazz = cfcLoader.getClass("./sp/src/main/resources/extClass",
+        Class<?> clazz = SpUtil.loadClassFile("./sp/src/main/resources/extClass",
                 "sample.test.ClassLoadingSample");
-        System.out.println("Class Name : " + clazz.getName());
-        for(Field field : clazz.getDeclaredFields()){
-            System.out.println("field Name : " + field.getName() + "    field Type : " + field.getType());
-        }
 
         Object obj = clazz.newInstance();
-        Method addStrToList = clazz.getDeclaredMethod("addStrToList",String.class);
-        Method printInfo = clazz.getDeclaredMethod("printInfo");
+
+        Method addStrToList = SpUtil.getMethod(clazz,"addStrToList");
+        Method printInfo = SpUtil.getMethod(clazz,"printInfo");
 
         addStrToList.invoke(obj, "won");
         printInfo.invoke(obj);

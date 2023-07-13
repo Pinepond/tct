@@ -36,13 +36,13 @@ public class SpUtil {
 	
 	
 	//json
-	public static String ObjectToJsonString(Object obj) throws JsonSyntaxException, IOException {
+	public static String objectToJsonString(Object obj) throws JsonSyntaxException, IOException {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		;
 		return gson.toJson(obj);
 	}
 
-	public static <T> T StringToObject(String json, Class<T> targetClazz) throws JsonSyntaxException, IOException {
+	public static <T> T jsonStringToObject(String json, Class<T> targetClazz) throws JsonSyntaxException, IOException {
 		Gson gson = new Gson();
 		return gson.fromJson(json, targetClazz);
 	}
