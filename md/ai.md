@@ -87,6 +87,9 @@
   - LSTM(Long Short term memory)
     - 먼과거의 중요한 자료는 기억하고, 불필요한것은 버리는 RNN
     - forget gate, input gate, ouput gate 로 구성됨
+    > - forget gate : 과거의 정보 중 불필요한 부분은 통과시키지 않고 잊어버림
+    > - input gate : 현재 input date 를 반영할지, 별로 중요하지 않으니 거를지 판단
+    > - output gate : 연산된 최종 정보를 다음 시점으로 얼마나 전달할지 결정.
     - RNN 보다 예측은 잘하나 , 속도는 더 느려짐
     - 비슷한것으로 GRU 가 있음
     - ex) 태양광 에너지 발전량 에측, 번역도 단어 순서대로 시계열처리가능(sequence to sequence)
