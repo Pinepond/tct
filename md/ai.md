@@ -97,28 +97,28 @@
 - 오프라인 프로세스(offline process)
   - 오픈전 모델 최적화에 해당
   - Training Pipeline
-    - 기존 데이터를 정제하여 필요하느 부분을 취하거나 라벨을 붙인다.
-    - 데이터가 마련되면 좋은 성능을 달성할때까지(validate & select model) 반복실험 진행 -> 튜닝
-    - 배포를 위해 최종모델 선택(publish model)
+    - **Generate features** & **Collect lables** : 기존 데이터를 정제하여 필요하느 부분을 취하거나 라벨을 붙인다.
+    - **validate** & **select models** & **train models** & **tunning** : 데이터가 마련되면 좋은 성능을 달성할때까지 반복실험 진행 -> 튜닝
+    - **publish model** : 배포를 위해 최종모델 선택
 - 온라인 프로세스(online process)
   - 오픈후 운영단계에 해당 -> 개발에 가까움 ai 모델을 운영환경에 띄우고, 화면 개발 , 고객사 db 연결 등
-  - 이제부터는 운영환경 스트리밍 데이터(live data) 처리
+  - 이제부터는 운영환경 **스트리밍 데이터(live data)** 처리
 - 오버피팅(overfitting)과 일반화(generalization)
   - 일반화(generalization) : 이전에 본적 없는 데이터에 대해서도 잘 수행하는 능력
   - 일반화 능력이 떨어지며 오버피팅된 상태임(새로운 데이터 처리 불가, 기존 답만 제대로 수행)
   - 오버피팅을 회피하고 일반화를 잘하기 위해 , 기존을 데이터를 Training, Validation, Test 로 나누어 사용한다.(8:2:2,9:1:1)
-    - Traning set : 학습용 데이터, 정답이 있는 데이터
+    - Traning set : 학습용 데이터, 정답을 알려주고 학습에 이용
     - Validation set : 정답을 알려주지 않음, 이 데이터를 통해 모델 튜닝
-    - Test set : 최종 성능 평가용 데이터
+    - Test set : 최종 성능 평가용 데이터 -> 여러모델 중 누가 잘 학습되었나 판단 기준
 - 학습곡선(learning curve) 확인하기
   - Traning set 의 정답률이 올라가나, validation set 의 정답률은 올라가지 않기 시작하면 오버피팅
-- Regularization(정규화) : 일반화(generaliztion) 성능향상이 목적임
+- Regularization(정규화) : **오버피팅을 피하고 일반화(generaliztion) 성능향상**이 목적임
   - 데이터 증강 : 데이터를 변조하여 더많이 확보하는 방식
     - 이미지 반전, 크롭, 노이즈, 생상, 명암 , 채도 변화 등과같은 방식
   - Capacity 줄이기
     - Capacity 는 모델의 복잡한 정도를 나타냄
-    - 신경망이 여러층이거나, 뉴런수가 많아질면 높아짐
-    - Capacity 가 필요이상으로 높으면 그냥 데이터 외움
+    - 신경망이 여러층이거나, 뉴런수가 많아지면 높아짐
+    - Capacity 가 높으면 처리할 데이터의 복잡 다양한 패턴을 잘 처리할수 있음, **하지만 필요이상으로 높으면 그냥 데이터 외움**
   - 조기종료(Early Stopping)
     - 오버피팅이 감지되면 조기종료(validation set 의 개선이 없을때)
   - 드롭아웃(Dropout)
@@ -134,7 +134,9 @@
   - 이미 만들어 놓은 모델의 아키텍처를 새태스크에 맞게 조금 수정
   - Catastrophic Forgetting (치명적 기억상실 ) : transfer 가 많이되면 기존 데이터를 잊게됨
   - Transfer 를 잘하려면?
-    - 레이어 동결 - 기존데이터를 처리하는 전반부 는 동결, 새타스크를위한 후반부 진행
+    - 레이어 동결
+      - 기존데이터를 처리하는 전반부 는 동결, 새타스크를위한 후반부 진행, 일반적으로 딥러닝은 두개 이상의 층으로 구성되며, 초반부에는 구체적이고 기본적인 특징 학습, 후반부에는 특정 태스크를 위한 추상적이고 개념적인 특징 학습
+      - 태스크가 많이 비슷하면, 다 동결 후, 후반부 부터 조금씩 동결을 푸는 **Gradual Unfreezing** 도 적용 가능
     - Discriminative fine tuning - 전반부는 조금만 공부, 후반부는 많이 공부(층마다 Learning rate(학습률)의 차별)
 
 ## 8.준비된 인공지능
