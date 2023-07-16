@@ -20,7 +20,14 @@ import com.google.gson.JsonSyntaxException;
 
 public class SpUtil {
 
-	// thread sample 
+	// == Scanner sample ==
+//	Scanner scan = new Scanner(System.in);
+//	while (true) {
+//	    String nextLine = scan.nextLine();
+//		
+//	}
+
+	// == thread sample ==
 	// ExecutorService service = Executors.newFixedThreadPool(300);
 	// service.execute(() -> {
         // });
