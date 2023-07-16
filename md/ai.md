@@ -108,8 +108,9 @@
   - 일반화 능력이 떨어지며 오버피팅된 상태임(새로운 데이터 처리 불가, 기존 답만 제대로 수행)
   - 오버피팅을 회피하고 일반화를 잘하기 위해 , 기존을 데이터를 Training, Validation, Test 로 나누어 사용한다.(8:2:2,9:1:1)
     - Traning set : 학습용 데이터, 정답을 알려주고 학습에 이용
-    - Validation set : 정답을 알려주지 않음, 이 데이터를 통해 모델 튜닝
-    - Test set : 최종 성능 평가용 데이터 -> 여러모델 중 누가 잘 학습되었나 판단 기준
+    - Validation set : 정답을 알려주지 않음, 이 데이터를 통해 모델들 튜닝 / 최종 모델 선택
+    - Test set : 최종 성능 평가용 데이터
+    - Test set 수행이후에 최종 성능향상을 위해 training, validation, test 셋을 기반으로 학습가능
 - 학습곡선(learning curve) 확인하기
   - Traning set 의 정답률이 올라가나, validation set 의 정답률은 올라가지 않기 시작하면 오버피팅
 - Regularization(정규화) : **오버피팅을 피하고 일반화(generaliztion) 성능향상**이 목적임
@@ -164,7 +165,7 @@
 - Query Strategy : 어떻게 잘모르는 데이터를 선별할지?
   - Uncertainty Sampling : 학습된 모델의 판정값을 기반으로 뽑는다. -> ai 가 불확실하다고 판단하는 데이터 추출
     (ex: 강아지, 고양이 확률 50% 면 Uncertain)
-  - Query By Commitee : 여러 ai 모델이 자주틀리는 데이터 뽑는다.
+  - Query By Commitee : 여러 ai 모델간 결과값이 다른 데이터 선별.
   - Expected Impact : 데이터가 추가될때, 학습된 모델이 가장 많이 변화하는데이터 선별
   - Density Weighted mothod : 밀집된 데이터 선별
   - Core-set approach : 데이터를 최대한 고르게 선별하여 전체 분표를 대표할수 있게함
