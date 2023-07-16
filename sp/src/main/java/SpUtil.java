@@ -1,6 +1,8 @@
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -104,5 +106,30 @@ public class SpUtil {
 		return Arrays.stream(clazz.getMethods()).filter(c -> {
 			return c.getName() == methodName;
 		}).findFirst().get();
+	}
+	
+	
+	// execute new process
+	public static void execProc(String batFileName, String... params) {
+		String path = System.getProperty("user.dir");
+		Process process = null;
+		List<String> command = Arrays.asList(new String[] { "cmd.exe", "/C", path + File.separator + batFileName });
+		command.addAll(Arrays.asList(params));
+		ProcessBuilder builder = new ProcessBuilder(command);
+
+		try {
+			// 프로세스 빌더를 통하여 외부 프로그램 실행
+			process = builder.start();
+			// 외부 프로그램의 표준출력 상태 버퍼에 저장
+			BufferedReader stdOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			// 표준출력 상태를 출력
+			String str = "";
+			while ((str = stdOut.readLine()) != null) {
+				System.out.println(str);
+			}
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 }
