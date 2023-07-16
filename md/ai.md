@@ -73,16 +73,17 @@
 - 순환신경망 ( RNN :  Recurrent Neural Network )
   - 과거에 데이터를 처리하여 결과를 출력했던 과정의 일부를 가져와 현 시점에서 데이터를 처리하고 결과를 출력하는 데 도움을 주는 방식, 이 때 입력 데이터의 정보를 누적하는 부분을 인코딩(Encoding), 결과를 출력하는 부분을 디코딩(Decoding)이라고 표현
   - 장점
-    - 시간 흐름에 다른 과거정보를 누적할 수 있다.
-    - 가변길이의 데이터를 처리할 수 있다.
-    - 다양한 구성의 모델을 만들 수 있다.
+    - 시간 흐름에 다른 과거정보를 누적할 수 있다. -> 과거 timestep 의 처리내역을 반영하여 결과 도출
+    - 가변길이의 데이터를 처리할 수 있다. -> 일, 월, 시간, 초와 같이 원하는 구성으로 데이터 처리 가능
+    - 다양한 구성의 모델을 만들 수 있다. -> 하나의 input 에서 여러 output, 여러 input 에서 하나의 output 과 같이 다양한 구성 가능
   - 단점
-    - 연산속도가 느리다. (과거데이터부터 순차로 처리하기 때문)
+    - 연산속도가 느리다. (과거데이터부터 순차로 처리하기 때문 - GPU 장점인 병렬연산을 잘 활용하기 어려움) 정형데이터(수치,범주 등)에서는 속도저하를 체감하기 힘드나, 텍스트 데이터에 주로 문제가 됨
     - 학습이 불안정하다
+      - rnn 은 학습이 매우 어려운 알고리즘중 하나임
       - timestep 가 너무길어지면, 학습량 폭발(gradient exploding)
       - timestep 가 길어지면 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing)
-    - 장기 종속성/의존성 문제(long term dependency) - 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing 과 long term dependency 차이 모르겠음)
-- RNN 성능보와
+    - 실질적으로 과거정보를 잘 활용하기 어려움 - 장기 종속성/의존성 문제(long term dependency) - 먼 과거의 데이터는 현재 추론에 영향을 거의 미치지 못함 (Gradient Vanishing 과 long term dependency 차이 모르겠음)
+- RNN 성능보완
   - LSTM(Long Short term memory)
     - 먼과거의 중요한 자료는 기억하고, 불필요한것은 버리는 RNN
     - forget gate, input gate, ouput gate 로 구성됨
