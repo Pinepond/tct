@@ -53,6 +53,7 @@ public class SpUtil {
 
 	public static <T> T jsonFileToObject(String path, Class<T> targetClazz) throws JsonSyntaxException, IOException {
 		Gson gson = new Gson();
+		//Gson gson = new GsonBuilder().setFieldNamingStrategy(f -> f.getName().toUpperCase()).create();
 		return gson.fromJson(fileToString(path), targetClazz);
 	}
 	
