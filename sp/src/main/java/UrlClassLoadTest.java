@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public class UrlClassLoadTest {
     public static void main(String[] args) throws Exception {
-//        System.out.println("testset");
-//        CustomFileClassLoader cfcLoader = new CustomFileClassLoader();
 
         Class<?> clazz = SpUtil.loadClassFile("./sp/src/main/resources/extClass",
                 "sample.test.ClassLoadingSample");
@@ -25,4 +23,3 @@ public class UrlClassLoadTest {
         printInfo.invoke(obj);
     }
 }
-//C:\Users\songy\IdeaProjects\tct\sp\src\main\resources\extClass\sample\test
