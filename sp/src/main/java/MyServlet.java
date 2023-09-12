@@ -1,175 +1,134 @@
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLStreamHandler;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpMethod;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.*;
 
-public class SpUtil {
+public class MyServlet extends HttpServlet {
 
-	// thread sample 
-	// ExecutorService service = Executors.newFixedThreadPool(300);
-	// service.execute(() -> {
-        // });
-	// service.submit(() -> {
-	//   return something;
-        // });
-	
-	// file
-	public static String fileToString(String path) throws IOException {
-		return Files.lines(new File(path).toPath()).collect(Collectors.joining(System.lineSeparator()));
-	}
+    private static final long serialVersionUID = 1L;
 
-	public static List<String> fileToStrings(String path) throws IOException {
-		return Files.lines(new File(path).toPath()).collect(Collectors.toList());
-	}
-	
-	public static void writeStringToFile(String path, String data) throws IOException {
-		Files.write(new File(path).toPath(), data.getBytes());
-	}
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        System.out.println("--------------------------------------------");
+        int serverPort = req.getLocalPort();
 
+        System.out.println("[GET] [ req.getRequestURL() : " + req.getRequestURL() + " ]");
+        // PATH Parsing 처리
+        String path = req.getServletPath().substring(1);
+        String pathArr[] = path.split("/");
+        String cmd = pathArr[0];
 
-	// send http request
-	public static ContentResponse sendHttpPostWithContent(String contentJson, String uri) {
-		HttpClient httpClient = new HttpClient();
-		ContentResponse contentRes = null;
-		try {
-			httpClient.start();
-			contentRes = httpClient.newRequest(uri).method(HttpMethod.POST)
-					.content(new StringContentProvider(contentJson)).send();
-			httpClient.stop();
+        // URL Query Param
+        for (String key : req.getParameterMap().keySet()) {
+            System.out.println("[GET] [ req.getParameter(" + key + ") : " + req.getParameter(key) + " ]");
+        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return contentRes;
-	}
-	
-	public static ContentResponse sendHttpGet(String uri) {
-		ContentResponse contentRes = null;
-		HttpClient httpClient = new HttpClient();
-		try {
-			httpClient.start();
-			contentRes = httpClient.newRequest(uri)
-					.method(HttpMethod.GET)
-					.send();
-			System.out.println("contentRes.getContentAsString() : " + contentRes.getContentAsString());
-			httpClient.stop();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return contentRes;
-	}
-	
-	//json
-	public static String objectToJsonString(Object obj) throws JsonSyntaxException, IOException {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		;
-		return gson.toJson(obj);
-	}
+        // Header
+        Enumeration<String> headerNames = req.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + " : " + req.getHeader(headerName));
+        }
+        System.out.println("--------------------------------------------");
 
-	public static <T> T jsonStringToObject(String json, Class<T> targetClazz) throws JsonSyntaxException, IOException {
-		Gson gson = new Gson();
-		return gson.fromJson(json, targetClazz);
-	}
+        if ("GETHEADER".equals(cmd)) {
+            System.out.println("req.getHeader(headerName) : " + req.getHeader("trace"));
+            resp.setHeader("trace", req.getHeader("trace"));
+//            writeResp(resp, jsonMap);
+        } else if ("DLQ".equals(cmd)) {
+//            writeResp(resp, jsonMap);
+        }
 
-	public static <T> T jsonFileToObject(String path, Class<T> targetClazz) throws JsonSyntaxException, IOException {
-		Gson gson = new Gson();
-		//Gson gson = new GsonBuilder().setFieldNamingStrategy(f -> f.getName().toUpperCase()).create();
-		return gson.fromJson(fileToString(path), targetClazz);
-	}
-	
-	// String
-	public static boolean isNullOrEmpty(String str) {
-		if (str == null || str.length() == 0) {
-			return true;
-		}
-		return false;
-	}
-	
-	// sleep
-	public static void sleep(long ms) {
-		try {
-			Thread.sleep(ms);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	// random uuid
-	public static String getRandomUUID() {
-		return UUID.randomUUID().toString();
-	}
-	
-	
-	// class loading
+    }
 
-	public static Class<?> loadClassFile(String classFilePath, String classNameWithPackgePath) throws Exception {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("--------------------------------------------");
+        int serverPort = req.getLocalPort();
 
-		ArrayList<URL> urls = new ArrayList<URL>();
-		URLStreamHandler urlStHandler = null;
-		File classPathFile = new File(classFilePath);
+        System.out.println("[POST] [ req.getRequestURL() : " + req.getRequestURL() + " ]");
+        // PATH Parsing 처리
+        String path = req.getServletPath().substring(1);
+        String pathArr[] = path.split("/");
+        String cmd = pathArr[0];
 
-		System.out.println(classPathFile.getCanonicalPath());
+        // URL Query Param
+        for (String key : req.getParameterMap().keySet()) {
+            System.out.println("[POST] [ req.getParameter(" + key + ") : " + req.getParameter(key) + " ]");
+        }
 
-		urls.add(new URL(null, "file:" + classPathFile.getCanonicalPath() + File.separator, urlStHandler));
+        // Header
+        Enumeration<String> headerNames = req.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String headerName = headerNames.nextElement();
+            System.out.println(headerName + " : " + req.getHeader(headerName));
+        }
+
+        // Set Map or Object from JSON parameter
+        String jsonString = jsonParamToString(req);
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, Object>>() {}.getType();
+        // Map 으로 json 받기 - json 에 단순 String 인경우 Object 로 받지 않고 String 으로 받는게 편함
+        Map<String, Object> jsonMap = gson.fromJson(jsonString, type);
+        // Object 로  json 받기
+        JsonInfo jsonInfo = gson.fromJson(jsonString, JsonInfo.class);
+
+        System.out.println("--------------------------------------------");
+
+        if ("SETHEADER".equals(cmd)) {
+
+//            writeResp(resp, jsonMap);
+        } else if ("SEND".equals(cmd)) {
+//            writeResp(resp, jsonMap);
+        } else if ("ACK".equals(cmd)) {
+//            writeResp(resp, jsonMap);
+        }
+    }
+
+    // 응답 json 샘플
+    public static void writeResp(HttpServletResponse resp, Map<String, Object> resMap) throws IOException {
+        Gson gson = new Gson();
+        resp.getWriter().write(gson.toJson(resMap));
+        //resp.flushBuffer();
+        resp.getWriter().flush();
+    }
+
+    public String jsonParamToString(HttpServletRequest req) throws IOException {
+        BufferedReader input = new BufferedReader(new InputStreamReader(req.getInputStream()));
+        StringBuffer sb = new StringBuffer();
+        String buffer;
+        while ((buffer = input.readLine()) != null) {
+            sb.append(buffer.trim());
+        }
+        input.close();
+        return sb.toString();
+    }
 
 
-		URLClassLoader urlLoader = new URLClassLoader((URL[]) urls.toArray(new URL[urls.size()]));
+    // http clinet request 샘플
+    public static void httpClientSend() {
+        String uuid = UUID.randomUUID().toString();
+        HttpClient httpClient = new HttpClient();
+        try {
+            httpClient.start();
+            ContentResponse contentRes =
+                    httpClient.newRequest("http://127.0.0.1:8090/GETHEADER").method(HttpMethod.GET).header("trace", uuid).send();
+            System.out.println("contentRes.getContentAsString() : " + contentRes.getHeaders());
+            httpClient.stop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-		return urlLoader.loadClass(classNameWithPackgePath);
-
-	}
-
-	public static Method getMethod(Class<?> clazz, String methodName) {
-		return Arrays.stream(clazz.getMethods()).filter(c -> {
-			return c.getName() == methodName;
-		}).findFirst().get();
-	}
-	
-
-	
-	
-	// execute new process
-	public static void execProc(String batFileName, String... params) {
-		String path = System.getProperty("user.dir");
-		Process process = null;
-		List<String> command = Arrays.asList(new String[] { "cmd.exe", "/C", path + File.separator + batFileName });
-		command.addAll(Arrays.asList(params));
-		ProcessBuilder builder = new ProcessBuilder(command);
-
-		try {
-			// 프로세스 빌더를 통하여 외부 프로그램 실행
-			process = builder.start();
-			// 외부 프로그램의 표준출력 상태 버퍼에 저장
-			BufferedReader stdOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			// 표준출력 상태를 출력
-			String str = "";
-			while ((str = stdOut.readLine()) != null) {
-				System.out.println(str);
-			}
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-	}
 }
