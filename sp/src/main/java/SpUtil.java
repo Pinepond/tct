@@ -11,8 +11,6 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.eclipse.jetty.client.HttpClient;
@@ -161,7 +159,11 @@ public class SpUtil {
         }).findFirst().get();
     }
 
-    // execute new process
+    /**
+     * 외부 bat 파일 실행, 파라미터 추가 가능
+     * @param batFileName
+     * @param params
+     */
     public static void execProc(String batFileName, String... params) {
         String path = System.getProperty("user.dir");
         Process process = null;
@@ -205,17 +207,28 @@ public class SpUtil {
         return builder.toString();
     }
 
-    // get time diff
-    public static long timeDiffSecs(long beforeTime, long afterTime) {
+    /**
+     * 두개의 시간의 차이를 초로 계산
+     * @param beforeTime
+     * @param afterTime
+     * @return
+     */
+    public static long calculateTimeDifferenceInSeconds(long beforeTime, long afterTime) {
         if (afterTime == 0) {
             afterTime = System.currentTimeMillis();
         }
         return (afterTime - beforeTime) / 1000;
     }
 
-    public static boolean isTimeDelayedOverSec(long beforeTime, long delayedSec) {
-        long afterTime = System.currentTimeMillis();
-        long calc = (afterTime - beforeTime) / 1000;
-        return calc > delayedSec ? true : false;
+    /**
+     * 시간 초과 확인
+     * @param previousTime
+     * @param waitingTimeInSeconds
+     * @return
+     */
+    public static boolean isWaitTimeExceeded(long previousTime, long waitingTimeInSeconds) {
+        long currentTime = System.currentTimeMillis();
+        long calc = (currentTime - previousTime) / 1000;
+        return calc > waitingTimeInSeconds;
     }
 }
