@@ -10,14 +10,14 @@ import java.net.URLStreamHandler;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
+import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpMethod;
 
@@ -28,15 +28,15 @@ import com.google.gson.JsonSyntaxException;
 public class SpUtil {
 
     // thread sample
-    private void threadSample() {
-        ExecutorService service = Executors.newFixedThreadPool(30);
-        service.execute(() -> {
-            System.out.println("thread.");
-        });
-        service.submit(() -> {
-            return something;
-        });
-    }
+//    private void threadSample() {
+//        ExecutorService service = Executors.newFixedThreadPool(30);
+//        service.execute(() -> {
+//            System.out.println("thread.");
+//        });
+//        service.submit(() -> {
+//            return "something";
+//        });
+//    }
 
     // file
     public static String fileToString(String path) throws IOException {
@@ -52,13 +52,13 @@ public class SpUtil {
     }
 
     // send http request
-    public static ContentResponse sendHttpPostWithContent(String contentJson, String uri) {
+    public static ContentResponse requestPost(String bodyJson, String uri) {
         HttpClient httpClient = new HttpClient();
         ContentResponse contentRes = null;
         try {
             httpClient.start();
             contentRes = httpClient.newRequest(uri).method(HttpMethod.POST)
-                    .content(new StringContentProvider(contentJson)).send();
+                    .content(new StringContentProvider(bodyJson)).send();
             httpClient.stop();
 
         } catch (Exception e) {
@@ -67,12 +67,27 @@ public class SpUtil {
         return contentRes;
     }
 
-    public static ContentResponse sendHttpGet(String uri) {
+    public static ContentResponse requestGet(String uri) {
+        return requestGetWithParams(uri, null);
+    }
+
+    public static ContentResponse requestGetWithParams(String uri, Map<String, String> params) {
         ContentResponse contentRes = null;
         HttpClient httpClient = new HttpClient();
         try {
             httpClient.start();
-            contentRes = httpClient.newRequest(uri).method(HttpMethod.GET).send();
+            Request request = httpClient.newRequest(uri).method(HttpMethod.GET);
+
+            if (params != null && !params.isEmpty()) {
+                for (String key : params.keySet()) {
+                    String val = params.get(key);
+                    if (!isNullOrEmpty(val)) {
+                        request.param(key, val);
+                    }
+                }
+            }
+
+            contentRes = request.send();
             System.out.println("contentRes.getContentAsString() : " + contentRes.getContentAsString());
             httpClient.stop();
         } catch (Exception e) {
@@ -113,8 +128,7 @@ public class SpUtil {
         try {
             Thread.sleep(ms);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // do nothing
         }
     }
 
